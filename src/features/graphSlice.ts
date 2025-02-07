@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { colors } from "../lib/constants";
 
 interface Node {
   id: string,
@@ -6,8 +7,11 @@ interface Node {
   data: {
     label: string,
     color: string,
-    fontSize: number
+    oldColor: string | null,
+    newColor: string | null,
+    fontSize: string
   },
+  type: string
 };
 
 interface Edge {
@@ -17,32 +21,75 @@ interface Edge {
   animated: boolean
 };
 
+interface change {
+  id: string,
+  property: "color" | "fontSize",
+  value: string
+}
+
 interface GraphState {
   nodes: Node[],
-  edges: Edge[]
+  edges: Edge[],
+  past: change[],
+  future: change[]
 };
 
 const initialState: GraphState = {
   nodes: Array.from({ length: 10 }, (_, i) => ({
     id: String(i + 1),
     position: { x: 300 + (i % 2 === 0 ? 100 : -100), y: i * 150 },
-    data: { label: `Node ${i + 1}`, color: '#000000', fontSize: 16 }
+    data: { label: `Node ${i + 1}`, color: colors[i], oldColor: null, newColor: null, fontSize: "12" },
+    type: "color"
   })),
   edges: Array.from({ length: 9 }, (_, i) => ({
     id: String(i + 1),
     source: String(i + 1),
     target: String(i + 2),
     animated: true
-  }))
+  })),
+  past: [],
+  future: []
 };
 
 const graphSlice = createSlice({
   name: "graph",
   initialState,
   reducers: {
-    //actions
+    changeNodeColor: (state, action: PayloadAction<{ id: string; color: string }>) => {
+      state.nodes = state.nodes.map(node =>
+        node.id === action.payload.id
+          ? { ...node, data: { ...node.data, color: action.payload.color } }
+          : node
+      );
+    },
+    setOldColor: (state, action: PayloadAction<{id: string, oldColor: string}>) => {
+      state.nodes = state.nodes.map(node => node.id === action.payload.id ? {...node, data: {...node.data, oldColor: action.payload.oldColor}} : node);
+    },
+    setNewColor: (state, action: PayloadAction<{id: string, newColor: string}>) => {
+      state.nodes = state.nodes.map(node => node.id === action.payload.id ? {...node, data: {...node.data, newColor: action.payload.newColor}} : node)
+    },
+    changeToPrevColor: (state, action: PayloadAction<{ id: string, oldColor: string}>) => {
+      const data = state.past.find(item => item.id === action.payload.id);
+      console.log(JSON.stringify(data));
+      
+      state.nodes = state.nodes.map(node =>
+        node.id === action.payload.id
+          ? { ...node, data: { ...node.data, color: action.payload.oldColor} }
+          : node
+      );
+    },
+    changeToNewColor: (state, action: PayloadAction<{ id: string, newColor: string}>) => {
+      state.nodes = state.nodes.map(node =>
+        node.id === action.payload.id
+          ? { ...node, data: { ...node.data, color: action.payload.newColor } }
+          : node
+      );
+    },
+    setFont: (state, action: PayloadAction<{id:string, font: string}>) => {
+      state.nodes = state.nodes.map(item => item.id === action.payload.id ? {...item, data: {...item.data, fontSize: action.payload.font}} : item)
+    },
   }
 });
 
-
+export const { changeNodeColor, setOldColor, setNewColor, changeToPrevColor, changeToNewColor, setFont } = graphSlice.actions;
 export default graphSlice.reducer;

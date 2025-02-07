@@ -1,6 +1,6 @@
 import './App.css';
 import 'reactflow/dist/style.css';
-import GraphContainer from './component/GraphContainer';
+import GraphContainer from './component/GraphContainer/GraphContainer';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 

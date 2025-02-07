@@ -1,7 +1,9 @@
-import { useCallback } from 'react';
-import ReactFlow, { Node, Edge, ReactFlowProvider, Background, Controls, useNodesState, useEdgesState, Connection, addEdge } from 'reactflow';
+import { useCallback, useMemo } from 'react';
+import ReactFlow, { ReactFlowProvider, Background, Controls, useNodesState, useEdgesState, Connection, addEdge } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import NodeCustomizationPanel from './NodeCustomizationPanel';
+
 
 function GraphContainer() {
 
@@ -14,7 +16,11 @@ function GraphContainer() {
   const onConnect = useCallback((connection: Connection) => {
     const edge = { ...connection, animated: true, id: `${edges.length + 1}` }
     setEdgeState(prev => addEdge(edge, prev))
-  }, [])
+  }, []);
+
+  const nodeTypes = useMemo(() => ({
+    color: NodeCustomizationPanel
+  }), []);
 
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -26,6 +32,7 @@ function GraphContainer() {
             onNodesChange={onNodeChange}
             onEdgesChange={onEdgeChange}
             onConnect={onConnect}
+            nodeTypes={nodeTypes}
             fitView >
             <Background />
             <Controls />

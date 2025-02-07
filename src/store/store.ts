@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import graphReducer from "../features/graphSlice"
+import graphReducer from "../features/graphSlice";
+import colorReducer from "../features/colorSlice";
 
 export const store = configureStore({
   reducer: {
-    graph: graphReducer
+    graph: graphReducer,
+    color: colorReducer
   }
 });
 
