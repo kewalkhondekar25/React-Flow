@@ -9,7 +9,7 @@ function GraphContainer() {
 
   const {nodes, edges} = useAppSelector(state => state.graph);
 
-  const [nodeState, setNodeState, onNodeChange] = useNodesState(nodes);
+  const [nodeState, _setNodeState, onNodeChange] = useNodesState(nodes);
   const [edgeState, setEdgeState, onEdgeChange] = useEdgesState(edges);
 
   const onConnect = useCallback((connection: Connection) => {

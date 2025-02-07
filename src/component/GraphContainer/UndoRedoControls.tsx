@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { RedoLogo, UndoLogo } from '../../lib/logo'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { changeToPrevColor, changeToNewColor } from '../../features/graphSlice'

@@ -1,6 +1,5 @@
 import { Handle, NodeProps, Position } from "reactflow";
 import ColorPicker from "../ColorPicker";
-import { useState } from "react";
 import UndoRedoControls from "./UndoRedoControls";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { openColor } from "../../features/colorSlice";
