@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { GithubPicker } from 'react-color';
 import { CloseLogo } from '../lib/logo';
 import { useAppDispatch } from '../store/hooks';

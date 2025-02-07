@@ -1,14 +1,13 @@
 import { useCallback, useMemo } from 'react';
 import ReactFlow, { ReactFlowProvider, Background, Controls, useNodesState, useEdgesState, Connection, addEdge } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useAppSelector } from '../../store/hooks';
 import NodeCustomizationPanel from './NodeCustomizationPanel';
 
 
 function GraphContainer() {
 
   const {nodes, edges} = useAppSelector(state => state.graph);
-  const dispatch = useAppDispatch();
 
   const [nodeState, setNodeState, onNodeChange] = useNodesState(nodes);
   const [edgeState, setEdgeState, onEdgeChange] = useEdgesState(edges);
