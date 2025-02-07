@@ -66,15 +66,20 @@ const graphSlice = createSlice({
       state.nodes = state.nodes.map(node => node.id === action.payload.id ? {...node, data: {...node.data, oldColor: action.payload.oldColor}} : node);
     },
     setNewColor: (state, action: PayloadAction<{id: string, newColor: string}>) => {
-      state.nodes = state.nodes.map(node => node.id === action.payload.id ? {...node, data: {...node.data, newColor: action.payload.newColor}} : node)
+      state.nodes = state.nodes.map(node => node.id === action.payload.id ? {...node, data: {...node.data, newColor: action.payload.newColor}} : node);
+      //setting => past[]
+      state.past.push({id: action.payload.id, property: "color", value: action.payload.newColor})
     },
-    changeToPrevColor: (state, action: PayloadAction<{ id: string, oldColor: string}>) => {
-      const data = state.past.find(item => item.id === action.payload.id);
-      console.log(JSON.stringify(data));
+    changeToPrevColor: (state, action: PayloadAction<{ id: string, oldColor: string, i: number}>) => {
+      const arr = state.past.filter(item => item.id === action.payload.id);
+      const index = arr.length - action.payload.i;
+      const value = arr[index]?.value;
+      console.log(JSON.stringify(value));
+      
       
       state.nodes = state.nodes.map(node =>
         node.id === action.payload.id
-          ? { ...node, data: { ...node.data, color: action.payload.oldColor} }
+          ? { ...node, data: { ...node.data, color: value} }
           : node
       );
     },

@@ -16,7 +16,7 @@ const UndoRedoControls = ({id}: {id: any}) => {
     <div>
       <button disabled={isDissable === null ? true : false} onClick={() => {
         setUndoCount(prev => prev + 1);
-        dispatch(changeToPrevColor({id, oldColor: old}));
+        dispatch(changeToPrevColor({id, oldColor: old, i: undoCount}));
       }}>
         <UndoLogo/>
       </button>
